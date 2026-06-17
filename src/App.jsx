@@ -15,11 +15,8 @@ import PayrollHistory from './pages/payroll/PayrollHistory'
 import Employees from './pages/employees/Employees'
 import SalaryRules from './pages/salary-rules/SalaryRules'
 import PayrollDetail from './pages/payroll/PayrollDetail'
-<<<<<<< HEAD
 import TandaTerima from './pages/payroll/TandaTerima'
 import RekapGaji from './pages/payroll/RekapGaji'
-=======
->>>>>>> 9a14d0b76b9a4203adeaad7a8170c3c4548641bb
 
 function App() {
   const [session, setSession] = useState(null)
@@ -58,7 +55,6 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-<<<<<<< HEAD
         
         {/* ========================================= */}
         {/* 1. KELOMPOK DALAM LAYOUT (ADA SIDEBAR)    */}
@@ -84,26 +80,6 @@ function App() {
       </Routes>
     </BrowserRouter>
   )
-=======
-        {/* Layout utama dengan sidebar */}
-        <Route path="/" element={<Layout />}>
-          {/* Dashboard */}
-          <Route index element={<Dashboard />} />
-
-          {/* Payroll Module */}
-          <Route path="process-payroll" element={<ProcessPayroll />} />
-          <Route path="payroll-history" element={<PayrollHistory />} />
-          <Route path="payroll-history/:id" element={<PayrollDetail />} />
-
-          {/* Master Data */}
-          <Route path="employees" element={<Employees />} />
-          <Route path="salary-rules" element={<SalaryRules />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  )
-
->>>>>>> 9a14d0b76b9a4203adeaad7a8170c3c4548641bb
 }
 
 export default App
