@@ -90,17 +90,12 @@ function PayrollDetail() {
   }
 
   // Tampilan Loading
-<<<<<<< HEAD
   if (loading) return <div className="flex justify-center items-center h-64"><div className="animate-pulse text-gray-500 font-bold text-lg">Memuat rincian slip gaji...</div></div>
-=======
-  if (loading) return <div className="flex justify-center items-center h-64"><div className="animate-pulse text-blue-500 font-bold text-lg">Memuat rincian slip gaji...</div></div>
->>>>>>> 9a14d0b76b9a4203adeaad7a8170c3c4548641bb
   if (!runData) return <div className="p-10 text-center text-rose-500 font-bold">Data riwayat tidak ditemukan!</div>
 
   return (
     <div className="pb-10">
       {/* HEADER & TOMBOL KEMBALI */}
-<<<<<<< HEAD
       <div className="flex gap-3">
         {/* TOMBOL BARU: REKAPITULASI */}
         <Link 
@@ -122,18 +117,6 @@ function PayrollDetail() {
             {runData.status}
         </div>
         </div>
-=======
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-        <div>
-          <Link to="/payroll-history" className="text-sm font-bold text-gray-400 hover:text-blue-600 mb-2 inline-block">← Kembali ke History</Link>
-          <h1 className="text-3xl font-black text-blue-700">Payroll Detail</h1>
-          <p className="text-gray-500 text-sm font-medium">Periode: <span className="font-bold text-gray-800">{getMonthName(runData.payroll_month)} {runData.payroll_year}</span></p>
-        </div>
-        <div className="bg-emerald-50 text-emerald-700 border border-emerald-200 px-4 py-2 rounded-xl text-sm font-bold uppercase tracking-widest shadow-sm">
-          {runData.status}
-        </div>
-      </div>
->>>>>>> 9a14d0b76b9a4203adeaad7a8170c3c4548641bb
 
       {/* SUMMARY CARDS */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
@@ -143,11 +126,7 @@ function PayrollDetail() {
         </div>
         <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 col-span-2">
           <p className="text-xs text-gray-400 font-bold mb-1">TOTAL PENGELUARAN GAJI</p>
-<<<<<<< HEAD
           <p className="text-2xl font-black text-green-600">{formatCurrency(runData.total_amount)}</p>
-=======
-          <p className="text-2xl font-black text-blue-600">{formatCurrency(runData.total_amount)}</p>
->>>>>>> 9a14d0b76b9a4203adeaad7a8170c3c4548641bb
         </div>
         <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
           <p className="text-xs text-gray-400 font-bold mb-1">TANGGAL DIBUAT</p>
@@ -162,11 +141,7 @@ function PayrollDetail() {
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left">
-<<<<<<< HEAD
             <thead className="bg-gray-50 text-black text-xs uppercase font-semibold">
-=======
-            <thead className="bg-blue-600 text-white text-xs uppercase font-semibold">
->>>>>>> 9a14d0b76b9a4203adeaad7a8170c3c4548641bb
               <tr>
                 <th className="px-6 py-4">Kode</th>
                 <th className="px-6 py-4">Nama</th>

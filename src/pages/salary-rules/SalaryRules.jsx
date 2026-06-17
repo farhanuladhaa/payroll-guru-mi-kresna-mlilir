@@ -190,11 +190,7 @@ function SalaryRules() {
     <div className="p-2">
       {/* HEADER BAR */}
       <div className="flex justify-between items-center mb-6">
-<<<<<<< HEAD
         <h1 className="text-3xl font-bold text-black">Salary Configuration Rules</h1>
-=======
-        <h1 className="text-3xl font-bold text-blue-600">Salary Configuration Rules</h1>
->>>>>>> 9a14d0b76b9a4203adeaad7a8170c3c4548641bb
         
         <div className="flex gap-2">
           <input type="file" accept=".csv" ref={fileInputRef} onChange={handleCSVImport} className="hidden" />
