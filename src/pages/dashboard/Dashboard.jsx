@@ -5,7 +5,10 @@ import { Link } from 'react-router-dom'
 function Dashboard() {
   const [stats, setStats] = useState({ totalEmployees: 0, lastPayroll: null, totalExpended: 0 })
   const [loading, setLoading] = useState(true)
+<<<<<<< HEAD
   const [downloadingTemplate, setDownloadingTemplate] = useState(false)
+=======
+>>>>>>> 9a14d0b76b9a4203adeaad7a8170c3c4548641bb
 
   useEffect(() => {
     loadDashboard()
@@ -17,7 +20,11 @@ function Dashboard() {
     // 1. Total Guru
     const { count } = await supabase.from('employees').select('*', { count: 'exact', head: true }).eq('is_active', true)
     
+<<<<<<< HEAD
     // 2. Data Payroll Terakhir
+=======
+    // 2. Data Payroll Terakhir (dari tabel payroll_runs yang baru kita buat)
+>>>>>>> 9a14d0b76b9a4203adeaad7a8170c3c4548641bb
     const { data: latest } = await supabase
       .from('payroll_runs')
       .select('*')
@@ -34,6 +41,7 @@ function Dashboard() {
     setLoading(false)
   }
 
+<<<<<<< HEAD
   // FUNGSI DOWNLOAD TEMPLATE PINTAR
   async function handleDownloadTemplate() {
     try {
@@ -81,6 +89,8 @@ function Dashboard() {
     }
   }
 
+=======
+>>>>>>> 9a14d0b76b9a4203adeaad7a8170c3c4548641bb
   const formatCurrency = (val) => 'Rp ' + Number(val || 0).toLocaleString('id-ID')
   const getMonthName = (m) => ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Ags','Sep','Okt','Nov','Des'][m - 1]
 
@@ -95,7 +105,11 @@ function Dashboard() {
 
       {/* STATS GRID */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+<<<<<<< HEAD
         <div className="bg-gradient-to-br from-green-600 to-green-600 p-6 rounded-3xl shadow-lg shadow-blue-200 text-white">
+=======
+        <div className="bg-gradient-to-br from-blue-600 to-blue-700 p-6 rounded-3xl shadow-lg shadow-blue-200 text-white">
+>>>>>>> 9a14d0b76b9a4203adeaad7a8170c3c4548641bb
           <p className="text-blue-100 font-bold text-xs uppercase tracking-wider mb-2">Total Guru Aktif</p>
           <p className="text-4xl font-black">{stats.totalEmployees}</p>
           <Link to="/employees" className="text-xs mt-4 block underline opacity-80">Kelola Data Guru →</Link>
@@ -121,6 +135,7 @@ function Dashboard() {
       {/* QUICK ACTIONS */}
       <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
         <h3 className="font-bold text-gray-800 mb-6">Aksi Cepat</h3>
+<<<<<<< HEAD
         <div className="flex flex-wrap gap-4">
           
           {/* Tombol Download Template (Baru) */}
@@ -140,6 +155,15 @@ function Dashboard() {
             ⚙️ Atur Komponen Gaji
           </Link>
 
+=======
+        <div className="flex gap-4">
+          <Link to="/process-payroll" className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-2xl font-bold text-sm transition">
+            ➕ Proses Payroll Baru
+          </Link>
+          <Link to="/salary-rules" className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded-2xl font-bold text-sm transition">
+            ⚙️ Atur Komponen Gaji
+          </Link>
+>>>>>>> 9a14d0b76b9a4203adeaad7a8170c3c4548641bb
         </div>
       </div>
     </div>

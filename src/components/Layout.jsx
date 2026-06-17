@@ -1,9 +1,16 @@
+<<<<<<< HEAD
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 
 function Layout() {
   const location = useLocation()
 
+=======
+import { Link, Outlet } from 'react-router-dom'
+import { supabase } from '../lib/supabase' // Import supabase di sini
+
+function Layout() {
+>>>>>>> 9a14d0b76b9a4203adeaad7a8170c3c4548641bb
   const menu = [
     { name: 'Dashboard', path: '/' },
     { name: 'Process Payroll', path: '/process-payroll' },
@@ -13,6 +20,7 @@ function Layout() {
   ]
 
   return (
+<<<<<<< HEAD
     <div className="min-h-screen bg-white">
       
       {/* NAVBAR */}
@@ -61,6 +69,42 @@ function Layout() {
         <Outlet />
       </main>
 
+=======
+    <div className="min-h-screen bg-gray-100 flex">
+      {/* Sidebar */}
+      <aside className="w-64 bg-blue-600 text-white p-6 flex flex-col">
+        <h1 className="text-2xl font-bold mb-8">
+          Payroll Guru
+        </h1>
+
+        <nav className="space-y-2 flex-grow">
+          {menu.map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              className="block px-4 py-3 rounded-lg hover:bg-blue-700 font-medium transition"
+            >
+              {item.name}
+            </Link>
+          ))}
+        </nav>
+
+        {/* Tombol Logout */}
+        <div className="border-t border-blue-500 pt-4 mt-4">
+          <button
+            onClick={() => supabase.auth.signOut()}
+            className="w-full text-left px-4 py-3 rounded-lg text-red-200 hover:bg-blue-700 hover:text-white font-bold transition flex items-center gap-2"
+          >
+            <span>🚪</span> Log Out
+          </button>
+        </div>
+      </aside>
+
+      {/* Content */}
+      <main className="flex-1 p-8">
+        <Outlet />
+      </main>
+>>>>>>> 9a14d0b76b9a4203adeaad7a8170c3c4548641bb
     </div>
   )
 }
