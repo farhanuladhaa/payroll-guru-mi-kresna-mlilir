@@ -201,14 +201,7 @@ function ProcessPayroll() {
 
       const gajiPokokMap = {
         'Kepala Madrasah': 1250000,
-        'Guru Kelas': 300000,
-        'Guru PJOK': 300000,
-        'Staff TU': 300000,
-        'Guru Ummi': 200000,
-        'Petugas Keamanan': 250000,
-        'Petugas Antar Jemput': 250000,
-        'Petugas Kebersihan': 300000,
-        'Karyawan Kantin': 200000
+        'Guru Kelas': 300000
       }
 
       // Mulai Looping
