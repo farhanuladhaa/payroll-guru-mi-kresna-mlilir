@@ -18,6 +18,7 @@ function Employees() {
     category: '', 
     bank_name: '', 
     account_number: '',
+    phone_number: '',
     is_active: true,
   })
 
@@ -39,7 +40,7 @@ function Employees() {
           name
         )
       `)
-      .order('created_at', { ascending: false })
+      .order('employee_code', { ascending: true }) // 🔄 UBAH BARIS INI JADI URUT NAMA A-Z
 
     setEmployees(data || [])
     setLoading(false)
@@ -75,6 +76,7 @@ function Employees() {
       category: form.category,
       bank_name: form.bank_name ? form.bank_name.toUpperCase() : null, // Paksa huruf besar
       account_number: form.account_number || null,
+      phone_number: form.phone_number || null,
       is_active: form.is_active,
     }
 
@@ -106,6 +108,7 @@ function Employees() {
       category: '',
       bank_name: '',
       account_number: '',
+      phone_number: '',
       is_active: true,
     })
     setEditingId(null)
@@ -129,6 +132,7 @@ function Employees() {
       category: emp.category || '', 
       bank_name: emp.bank_name || '',
       account_number: emp.account_number || '',
+      phone_number: emp.phone_number || '',
       is_active: emp.is_active,
     })
     setEditingId(emp.id)
@@ -213,6 +217,31 @@ function Employees() {
     }
     reader.readAsText(file)
     e.target.value = ''
+  }
+
+  function calculateMasaBakti(hireDateString) {
+    if (!hireDateString) return '-'
+    const hireDate = new Date(hireDateString)
+    const today = new Date()
+
+    let years = today.getFullYear() - hireDate.getFullYear()
+    let months = today.getMonth() - hireDate.getMonth()
+
+    // Koreksi jika perhitungan bulan minus (belum lewat bulan masuknya)
+    if (months < 0 || (months === 0 && today.getDate() < hireDate.getDate())) {
+      years--
+      months += 12
+    }
+    
+    // Koreksi tambahan jika tanggal hari ini belum melewati tanggal masuk
+    if (today.getDate() < hireDate.getDate() && months > 0) {
+      // Jangan kurangi bulan jika bulan baru saja ditambah 12 di atas
+      if (today.getMonth() !== hireDate.getMonth()) {
+        months--
+      }
+    }
+
+    return `${years} Tahun ${months} Bulan`
   }
 
   function formatDate(dateString) {
@@ -310,6 +339,23 @@ function Employees() {
               <option value="Karyawan">Karyawan</option>
             </select>
 
+            {/* 🚀 TARUH CHECKBOX-NYA TEPAT DI SINI */}
+            <div className="col-span-2">
+              <label className="flex items-center gap-3 p-3 border border-gray-200 rounded-xl bg-gray-50 cursor-pointer hover:bg-gray-100 transition">
+                <input 
+                  type="checkbox" 
+                  name="is_sertifikasi"
+                  checked={form.is_sertifikasi || false} 
+                  onChange={(e) => setForm({ ...form, is_sertifikasi: e.target.checked })}
+                  className="w-5 h-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                />
+                <div>
+                  <p className="text-sm font-bold text-gray-800">Guru Sertifikasi</p>
+                  <p className="text-xs text-gray-500 font-medium">Centang jika guru ini sudah bersertifikasi (tarif Jampel akan menggunakan aturan khusus).</p>
+                </div>
+              </label>
+            </div>
+
             {/* 4. INPUTAN BANK DAN NOMOR REKENING DI SINI! */}
             <div>
               <label className="block text-xs font-semibold text-gray-600 mb-1 ml-1">Nama Bank</label>
@@ -329,6 +375,16 @@ function Employees() {
                 onChange={handleChange}
                 placeholder="Contoh: 04501122..."
                 className="border p-2 rounded-xl w-full"
+              />
+            </div>
+            <div className="col-span-2">
+              <label className="block text-xs font-semibold text-green-700 mb-1 ml-1">No. WhatsApp</label>
+              <input
+                name="phone_number"
+                value={form.phone_number}
+                onChange={handleChange}
+                placeholder="Contoh: 0857xxxxxxx atau 628xxxxxxx"
+                className="border border-green-200 bg-green-50/30 p-2 rounded-xl w-full"
               />
             </div>
           </div>
@@ -373,6 +429,7 @@ function Employees() {
                 <th className="p-4">Nama Lengkap</th>
                 <th className="p-4">Jabatan (Kategori)</th>
                 <th className="p-4">Tanggal Masuk</th>
+                <th className="p-4">Masa Bakti</th>
                 <th className="p-4">Status</th>
                 <th className="p-4 text-center">Aksi</th>
               </tr>
@@ -394,7 +451,19 @@ function Employees() {
                       <td className="p-4 font-medium text-gray-700">
                         {emp.employee_code || '-'}
                       </td>
-                      <td className="p-4 text-gray-900 font-semibold">{emp.full_name}</td>
+                      <td className="p-4">
+                        <div className="flex items-center gap-2">
+                          <span className="font-bold text-gray-900">{emp.full_name}</span>
+                          
+                          {/* 🚀 TAMBAHKAN BADGE INI */}
+                          {emp.is_sertifikasi && (
+                            <span className="bg-blue-100 text-blue-800 text-[10px] font-black px-2 py-0.5 rounded-full border border-blue-200">
+                              ✓ SERTIFIKASI
+                            </span>
+                          )}
+                        </div>
+                        <div className="text-xs text-gray-500">{emp.category}</div>
+                      </td>
                       <td className="p-4">
                         <div className="flex flex-col gap-1">
                           <span className="font-semibold text-gray-800">{positionName || '-'}</span>
@@ -402,6 +471,9 @@ function Employees() {
                         </div>
                       </td>
                       <td className="p-4 text-gray-600">{formatDate(emp.hire_date)}</td>
+                      <td className="p-4 font-medium text-blue-700 bg-blue-50/20">
+                        {calculateMasaBakti(emp.hire_date)} {/* ➕ TAMBAHKAN INI */}
+                      </td>
                       <td className="p-4">
                         <span className={`px-2 py-0.5 rounded-md text-xs font-semibold ${emp.is_active ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
                           {emp.is_active ? 'Aktif' : 'Nonaktif'}

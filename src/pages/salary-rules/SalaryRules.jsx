@@ -30,8 +30,9 @@ function SalaryRules() {
     const { data } = await supabase
       .from('salary_rules')
       .select('*')
-      .order('category')
-      .order('min_year')
+      .order('category', { ascending: true })       // 1. Urutkan Kategori (Guru Kelas, Guru Ummi, Karyawan)
+      .order('salary_component', { ascending: false }) // 2. Kumpulkan Gaji Pokok dulu, baru Per Jampel
+      .order('min_year', { ascending: true })       // 3. Urutkan Masa Kerja dari yang paling baru (0, 3, 6, dst)
 
     setRules(data || [])
     setLoading(false)

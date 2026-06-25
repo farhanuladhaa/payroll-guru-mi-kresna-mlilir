@@ -39,7 +39,7 @@ function Dashboard() {
     try {
       setDownloadingTemplate(true)
 
-      // 1. Ambil semua guru yang aktif saja
+      // 1. Ambil semua guru yang aktif saja dan urutkan berdasarkan nama (A-Z)
       const { data: employees, error } = await supabase
         .from('employees')
         .select('employee_code, full_name')
@@ -48,26 +48,57 @@ function Dashboard() {
 
       if (error) throw error
 
-      // 2. Siapkan Header CSV (Kolom yang perlu diisi staff tiap bulan)
-      // full_name kita sertakan agar staff gampang lihat ini baris punya siapa
-      //let csvContent = "employee_code,full_name,jumlah_jampel,hari_transport,kasbon,potongan_lain\n"
-      let csvContent = "employee_code;full_name;jumlah_jampel;hari_transport;kasbon;potongan_lain\n"
+      if (!employees || employees.length === 0) {
+        return alert('Tidak ada data karyawan aktif untuk dibuatkan template.')
+      }
 
-      // 3. Masukkan baris data secara otomatis
+      // 2. Siapkan Header CSV (Hanya kolom dinamis yang perlu diisi HR)
+      // Menggunakan pemisah titik koma (;) agar lebih aman dibuka di Excel Indonesia
+      const headers = [
+        'employee_code', 
+        'full_name', 
+        'jumlah_jampel', 
+        'hari_transport', 
+        'tunj_ta', 
+        'tunj_ekstra',
+        'bpjs_kerja',       // ➕ TAMBAHKAN INI
+        'bpjs_kesehatan', 
+        'kasbon', 
+        'potongan_lain',
+        'tunjangan_lain_lain',
+        'tunjangan_jabatan',
+        'tunjangan_walikelas'
+      ]
+      
+      let csvContent = headers.join(';') + '\n'
+
+      // 3. Isi baris dengan data karyawan, sisanya diisi angka 0 sebagai default
       employees.forEach(emp => {
-        // Hilangkan koma dari nama jika ada, agar tidak merusak format CSV
-        const safeName = emp.full_name ? emp.full_name.replace(/;/g, '') : '-'
-        // Default value: 0 untuk semua angka
-        csvContent += `${emp.employee_code};${safeName};0;0;0;0\n`
+        const row = [
+          emp.employee_code,
+          emp.full_name,
+          '0', // Default Jampel
+          '0', // Default Transport
+          '0', // Default Tunj. TA
+          '0', // Default Tunj. Ekstra
+          '0', // Default BPJS Kerja       (➕ TAMBAHKAN INI)
+          '0', // Default BPJS Kesehatan   (➕ TAMBAHKAN INI)
+          '0', // Default Kasbon
+          '0',  // Default Potongan Lain
+          '0', // Tunjangan Lain-Lain      (➕ TAMBAHKAN INI)
+          '0', // Tunjangan Jabatan   (➕ TAMBAHKAN INI)
+          '0'  // Tunjangan Walikelas (➕ TAMBAHKAN INI)
+        ]
+        csvContent += row.join(';') + '\n'
       })
 
-      // 4. Ubah menjadi file yang bisa diunduh
+      // 4. Proses Download File
       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
       const link = document.createElement('a')
       const url = URL.createObjectURL(blob)
       
       link.setAttribute('href', url)
-      link.setAttribute('download', 'Template_Kehadiran_Bulanan.csv')
+      link.setAttribute('download', `Template_Kehadiran_MI Kresna Mlilir.csv`)
       link.style.visibility = 'hidden'
       
       document.body.appendChild(link)
@@ -75,7 +106,7 @@ function Dashboard() {
       document.body.removeChild(link)
 
     } catch (error) {
-      alert('Gagal mengunduh template: ' + error.message)
+      alert('Gagal mendownload template: ' + error.message)
     } finally {
       setDownloadingTemplate(false)
     }
