@@ -187,6 +187,32 @@ function SalaryRules() {
     return 'Rp' + (parseFloat(num) || 0).toLocaleString('id-ID')
   }
 
+  // 📥 FUNGSI EXPORT KE CSV
+  const handleExportCSV = () => {
+    let csvContent = "KATEGORI KARYAWAN;MASA BAKTI (RANGE);KOMPONEN;TARIF DASAR;KENAIKAN;TARIF AKHIR\n";
+    
+    // 🚀 MENGGUNAKAN STATE 'rules'
+    if (rules && rules.length > 0) {
+      rules.forEach(rule => {
+        const masaBakti = `${rule.min_year} - ${rule.max_year} Tahun`;
+        const komponen = rule.salary_component === 'hourly_rate' ? 'Per Jampel' : 
+                         rule.salary_component === 'fixed_salary' ? 'Gaji Pokok' : rule.salary_component;
+
+        csvContent += `${rule.category};${masaBakti};${komponen};${rule.base_amount};${rule.increase_percent};${rule.final_amount}\n`;
+      });
+    }
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", "Data_Aturan_Gaji.csv");
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="p-2">
       {/* HEADER BAR */}
@@ -195,15 +221,27 @@ function SalaryRules() {
         
         <div className="flex gap-2">
           <input type="file" accept=".csv" ref={fileInputRef} onChange={handleCSVImport} className="hidden" />
+          
+          {/* 🚀 TOMBOL EXPORT */}
+          <button 
+            onClick={handleExportCSV}
+            className="flex items-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-xl text-sm font-semibold transition shadow-sm"
+          >
+            📥 Download CSV
+          </button>
+
+          {/* 📤 TOMBOL IMPORT */}
           <button 
             onClick={() => fileInputRef.current.click()}
-            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-xl text-sm font-semibold transition"
+            className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-xl text-sm font-semibold transition shadow-sm"
           >
-            📥 Import Rules CSV
+            📤 Import Rules CSV
           </button>
+          
+          {/* ➕ TOMBOL TAMBAH ATURAN */}
           <button 
             onClick={() => { if(showForm) resetForm(); else setShowForm(true); }}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-semibold transition"
+            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-semibold transition shadow-sm"
           >
             {showForm ? '✖ Tutup Form' : '➕ Tambah Aturan'}
           </button>
